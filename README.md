@@ -435,8 +435,8 @@ For a portfolio, it shows more than a demo. It shows a system with clear busines
 Additionally, it reflects the ability to bridge engineering domains with modern AI tools, combining backend development, data processing, and user interface design.
 ## License
 
-Add your preferred license here.
+TODO: Add your preferred license here.
 
 ## Contact
 
-If you want to use this project as a portfolio piece or client demo, include your contact details here.
+TODO: 
