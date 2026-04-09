@@ -24,14 +24,14 @@ async def upload_document(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Filename is required.")
 
     record = await document_service.register_upload(file)
-    return DocumentUploadResponse.model_validate(record)
+    return DocumentUploadResponse.model_validate(record, from_attributes=True)
 
 
 @router.get("", response_model=DocumentListResponse)
 def list_documents(
     document_service: DocumentService = Depends(get_document_service),
 ) -> DocumentListResponse:
-    documents = [DocumentListItem.model_validate(document) for document in document_service.list_documents()]
+    documents = [DocumentListItem.model_validate(document, from_attributes=True) for document in document_service.list_documents()]
     return DocumentListResponse(documents=documents)
 
 
@@ -43,4 +43,4 @@ def get_document(
     document = document_service.get_document(document_id)
     if document is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Document not found.")
-    return DocumentDetail.model_validate(document)
+    return DocumentDetail.model_validate(document, from_attributes=True)

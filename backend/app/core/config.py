@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     vector_store: str = "faiss"
     upload_dir: Path = Field(default=Path("./data/uploads"))
     index_path: Path = Field(default=Path("./data/index"))
+    metadata_dir: Path = Field(default=Path("./data/metadata"))
 
     chunk_size: int = 1000
     chunk_overlap: int = 200
@@ -28,6 +29,7 @@ class Settings(BaseSettings):
     def ensure_directories(self) -> None:
         self.upload_dir.mkdir(parents=True, exist_ok=True)
         self.index_path.mkdir(parents=True, exist_ok=True)
+        self.metadata_dir.mkdir(parents=True, exist_ok=True)
 
 
 @lru_cache(maxsize=1)

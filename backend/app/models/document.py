@@ -18,6 +18,15 @@ class DocumentRecord(DocumentBase):
     file_path: Path | None = None
 
 
+class DocumentChunkRecord(BaseModel):
+    chunk_id: str
+    document_id: str
+    chunk_index: int
+    text: str
+    page: int | None = None
+    character_count: int = 0
+
+
 class DocumentUploadResponse(DocumentBase):
     pass
 

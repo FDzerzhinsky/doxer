@@ -17,7 +17,7 @@ This is the order in which the backend should evolve from the current skeleton.
 
 ## Phase 3: Retrieval
 
-- Swap the in-memory vector store for FAISS
+- FAISS-backed vector store with disk persistence
 - Persist embeddings on disk
 - Add retrieval scoring and source citation payloads
 

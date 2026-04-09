@@ -19,10 +19,10 @@ ENV/
 !backend/.env.example
 
 # Backend runtime data
-backend/data/*
-!backend/data/.gitkeep
-!backend/data/uploads/.gitkeep
-!backend/data/index/.gitkeep
+backend/data/
+
+# Accidental nested inspection workspace created from running CLI inside backend/
+backend/backend/data/
 
 # Build and packaging outputs
 build/
