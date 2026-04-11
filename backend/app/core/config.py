@@ -15,7 +15,10 @@ class Settings(BaseSettings):
 
     embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
     llm_provider: str = "mock"
-    ollama_model: str = "llama3.1"
+    ollama_base_url: str = "http://localhost:11434"
+    ollama_model: str = "qwen2.5:7b"
+    llm_temperature: float = 0.2
+    llm_timeout: float = 60.0
 
     vector_store: str = "faiss"
     upload_dir: Path = Field(default=Path("./data/uploads"))

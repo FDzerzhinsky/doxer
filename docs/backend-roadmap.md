@@ -2,6 +2,14 @@
 
 This is the order in which the backend should evolve from the current skeleton.
 
+## Current Status
+
+- [x] Phase 1: Skeleton
+- [x] Phase 2: Document Processing
+- [x] Phase 3: Retrieval
+- [x] Phase 4: Model Integration
+- [ ] Phase 5: Production Hardening
+
 ## Phase 1: Skeleton
 
 - FastAPI app and route wiring
@@ -23,7 +31,7 @@ This is the order in which the backend should evolve from the current skeleton.
 
 ## Phase 4: Model Integration
 
-- Connect Ollama or a hosted LLM provider
+- Ollama provider wired into the RAG flow
 - Add prompt templates for grounded answers
 - Handle error and fallback paths explicitly
 

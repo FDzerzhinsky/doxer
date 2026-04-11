@@ -4,6 +4,14 @@ AI Document Assistant is a fullstack application that enables users to interact 
 
 It allows uploading PDFs or text files and asking questions about their content, returning accurate, context-aware answers powered by Retrieval-Augmented Generation (RAG).
 
+## Current Implementation Status
+
+- Backend pipeline is implemented and tested.
+- Embeddings are working, but they are currently deterministic hash-based vectors rather than a semantic model.
+- Vector storage is working and backed by FAISS with disk persistence.
+- LLM answering is wired through Ollama with a mock fallback.
+- Frontend is planned, but it is not yet checked into this repository.
+
 This type of system is commonly used in:
 - internal knowledge bases
 - technical documentation search
@@ -29,11 +37,11 @@ The project demonstrates how modern AI systems can turn static documents into in
 
 - Upload PDF and TXT documents through a clean web interface
 - Extract and chunk document content for downstream retrieval
-- Generate embeddings for semantic search
+- Generate embeddings for semantic search via a pluggable embedding layer
 - Store vectors in FAISS for fast similarity lookup
 - Ask questions in natural language and receive grounded answers
 - Return source-aware responses based on retrieved context
-- Support a lightweight React frontend and a FastAPI backend
+- Support a planned lightweight React frontend and a FastAPI backend
 - Designed with scalability in mind to multiple users and larger document collections
 
 ## Real-World Context
@@ -86,14 +94,14 @@ flowchart LR
 - Pydantic
 - FAISS
 
-### Frontend
+### Frontend (planned)
 - React
 - HTML/CSS
 - Fetch API or Axios
 
 ### AI and Search
-- Ollama or hosted LLM API
-- sentence-transformers or OpenAI embeddings
+- Ollama or hosted LLM API for answer generation
+- Deterministic embedding service today, easy to swap for sentence-transformers or OpenAI later
 - FAISS for vector similarity search
 
 ### Document Processing
@@ -131,26 +139,16 @@ ai-document-assistant/
 │   │   └── main.py
 │   ├── data/
 │   │   ├── uploads/
-│   │   └── index/
-│   ├── requirements.txt
+│   │   ├── index/
+│   │   └── metadata/
+│   ├── tests/
+│   ├── pyproject.toml
+│   ├── uv.lock
+│   ├── README.md
 │   └── .env.example
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── UploadForm.jsx
-│   │   │   ├── ChatBox.jsx
-│   │   │   └── DocumentList.jsx
-│   │   ├── pages/
-│   │   │   └── Home.jsx
-│   │   ├── services/
-│   │   │   └── api.js
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   ├── public/
-│   ├── package.json
-│   └── .env
 ├── docs/
-│   └── images/
+│   ├── backend-roadmap.md
+│   └── testing-strategy.md
 ├── README.md
 └── .gitignore
 ```
@@ -160,9 +158,8 @@ ai-document-assistant/
 ### Prerequisites
 
 - Python 3.10+
-- Node.js 18+
-- npm or yarn
 - Optional: Ollama installed locally if using a local LLM
+- Optional: Node.js 18+ for the future frontend when it is added
 
 ### 1. Clone the repository
 
@@ -175,23 +172,7 @@ cd ai-document-assistant
 
 ```bash
 cd backend
-python -m venv .venv
-```
-
-Activate the virtual environment:
-
-```bash
-# Windows
-.venv\Scripts\activate
-
-# macOS/Linux
-source .venv/bin/activate
-```
-
-Install backend dependencies:
-
-```bash
-pip install -r requirements.txt
+uv sync
 ```
 
 ### 3. Configure environment variables
@@ -209,28 +190,19 @@ EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
 
 # LLM
 LLM_PROVIDER=ollama
-OLLAMA_MODEL=llama3.1
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=qwen2.5:7b
+LLM_TEMPERATURE=0.2
+LLM_TIMEOUT=60
 
 # Vector store
 VECTOR_STORE=faiss
 INDEX_PATH=./data/index
 UPLOAD_DIR=./data/uploads
+METADATA_DIR=./data/metadata
 ```
 
 If you use a hosted LLM or embeddings API, replace these values with your provider credentials.
-
-### 4. Set up the frontend
-
-```bash
-cd ../frontend
-npm install
-```
-
-Create a `.env` file in the `frontend/` directory if needed:
-
-```env
-VITE_API_BASE_URL=http://localhost:8000
-```
 
 ## Usage
 
@@ -239,7 +211,7 @@ VITE_API_BASE_URL=http://localhost:8000
 From the `backend/` directory:
 
 ```bash
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+uv run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 The API will be available at:
@@ -254,27 +226,13 @@ API documentation will be available at:
 http://localhost:8000/docs
 ```
 
-### Start the frontend
-
-From the `frontend/` directory:
-
-```bash
-npm run dev
-```
-
-The UI will be available at:
-
-```text
-http://localhost:5173
-```
-
 ### Typical workflow
 
-1. Open the React app in the browser.
-2. Upload a PDF or TXT document.
+1. Start the backend.
+2. Upload a PDF or TXT document through the API or the inspection CLI.
 3. Wait for the system to process and index the file.
-4. Enter a question in the chat interface.
-5. Receive an answer generated from the uploaded content.
+4. Ask a question with `/api/chat/ask`.
+5. Receive an answer grounded in the uploaded content.
 
 ## API Endpoints
 
@@ -312,7 +270,9 @@ POST /api/documents/upload
   "document_id": "doc_12345",
   "filename": "employee-handbook.pdf",
   "status": "processed",
-  "chunks_created": 24
+  "uploaded_at": "2026-04-06T10:15:00Z",
+  "chunks_created": 24,
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2"
 }
 ```
 
@@ -331,7 +291,9 @@ GET /api/documents
       "document_id": "doc_12345",
       "filename": "employee-handbook.pdf",
       "status": "processed",
-      "uploaded_at": "2026-04-06T10:15:00Z"
+      "uploaded_at": "2026-04-06T10:15:00Z",
+      "chunks_created": 24,
+      "embedding_model": "sentence-transformers/all-MiniLM-L6-v2"
     }
   ]
 }
@@ -381,8 +343,10 @@ GET /api/documents/{document_id}
   "document_id": "doc_12345",
   "filename": "employee-handbook.pdf",
   "status": "processed",
+  "uploaded_at": "2026-04-06T10:15:00Z",
   "chunks_created": 24,
-  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2"
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "content_type": "application/pdf"
 }
 ```
 
