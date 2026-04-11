@@ -22,6 +22,7 @@ dependencies = [
 [project.scripts]
 inspect-ingestion = "app.scripts.inspect_ingestion:main"
 ask-document = "app.scripts.ask_document:main"
+ask-document-ollama = "app.scripts.ask_document_ollama:main"
 
 [dependency-groups]
 dev = [

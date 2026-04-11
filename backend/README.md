@@ -95,13 +95,26 @@ uv run --project backend ask-document --file path/to/your-file.txt --llm-provide
 ```
 
 If you are already inside `backend/`, you can omit `--project backend` and use `uv run ask-document ...` instead.
-Recommended model for an RTX 3080 with 10 GB VRAM: `qwen2.5:7b`. It is small enough to run comfortably on this GPU and supports Russian well.
 
 `mock` means the answer is generated without calling Ollama. It is useful for offline checks and for testing the retrieval path without requiring a local model server.
 
 If `LLM_PROVIDER=ollama`, the answer will come from your local Ollama server. To use that path, Ollama must be installed, running, and have the target model pulled locally.
 
 The command prints a JSON payload with the question, the answer, the retrieved sources, and the ingestion snapshot.
+
+### Test the full RAG + LLM pipeline
+
+For the end-to-end local Ollama path, use the dedicated wrapper command:
+
+```bash
+uv run --project backend ask-document-ollama --file path/to/your-file.txt --question "Каким шрифтом следует оформлять название статьи?"
+```
+
+This command defaults to Ollama, so it is the quickest way to verify retrieval plus model generation together. The recommended model for an RTX 3080 with 10 GB VRAM is `qwen2.5:7b`; it is small enough to run comfortably on this GPU and supports Russian well.
+
+If you are already inside `backend/`, you can omit `--project backend` and use `uv run ask-document-ollama ...` instead.
+
+If you want to compare the live path against the offline pipeline, you can still pass `--llm-provider mock` to the wrapper command.
 
 ## Notes for the next iteration
 

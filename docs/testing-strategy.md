@@ -62,7 +62,10 @@ uv sync
 uv run pytest
 uv run pytest tests/test_chunking.py
 uv run pytest -m smoke
+uv run ask-document-ollama --file ../docs/example.txt --question "Каким шрифтом следует оформлять название статьи?"
 ```
+
+The last command is the quickest manual check for the full RAG + LLM path against the bundled sample document.
 
 ## Suggested Markers
 
