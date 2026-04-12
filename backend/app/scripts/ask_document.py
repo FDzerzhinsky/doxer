@@ -13,6 +13,7 @@ from app.services.embedding_service import EmbeddingService
 from app.services.llm_service import LLMService
 from app.services.rag_service import RagService
 from app.services.vector_store import VectorStore
+from app.scripts.stdio import configure_utf8_stdio
 
 
 def build_parser(default_llm_provider: str | None = None) -> argparse.ArgumentParser:
@@ -74,6 +75,7 @@ def build_settings(
 
 
 def main(default_llm_provider: str | None = None) -> int:
+    configure_utf8_stdio()
     parser = build_parser(default_llm_provider=default_llm_provider)
     args = parser.parse_args()
 

@@ -10,6 +10,7 @@ from app.repositories.metadata_store import JsonMetadataStore
 from app.services.document_service import DocumentService
 from app.services.embedding_service import EmbeddingService
 from app.services.vector_store import VectorStore
+from app.scripts.stdio import configure_utf8_stdio
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -39,6 +40,7 @@ def build_settings(workspace_dir: Path | None, chunk_size: int, chunk_overlap: i
 
 
 def main() -> int:
+    configure_utf8_stdio()
     parser = build_parser()
     args = parser.parse_args()
 
