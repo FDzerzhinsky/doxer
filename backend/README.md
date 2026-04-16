@@ -104,13 +104,21 @@ The command prints a JSON payload with the question, the answer, the retrieved s
 
 ### Test the full RAG + LLM pipeline
 
-For the end-to-end local Ollama path, use the dedicated wrapper command:
+Start the local Ollama server in a first PowerShell terminal:
 
-```bash
+```powershell
+& "$env:LOCALAPPDATA\Programs\Ollama\ollama.exe" serve
+```
+
+Keep that terminal open while you test the CLI. If `ollama` is on PATH, `ollama serve` is equivalent.
+
+Then, in a second terminal, use the dedicated wrapper command:
+
+```powershell
 uv run --project backend ask-document-ollama --file path/to/your-file.txt --question "Каким шрифтом следует оформлять название статьи?"
 ```
 
-This command defaults to Ollama, so it is the quickest way to verify retrieval plus model generation together. The recommended model for an RTX 3080 with 10 GB VRAM is `qwen2.5:7b`; it is small enough to run comfortably on this GPU and supports Russian well.
+This stays short because the CLI uses the project defaults for the local Ollama endpoint. For CPU-only machines, `qwen2.5:1.5b` is the default fit; it is much lighter than `qwen2.5:7b` and is a better fit when there is no discrete GPU.
 
 If you are already inside `backend/`, you can omit `--project backend` and use `uv run ask-document-ollama ...` instead.
 

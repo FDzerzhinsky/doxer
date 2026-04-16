@@ -49,7 +49,7 @@ def test_ollama_llm_service_posts_expected_payload(monkeypatch) -> None:
     service = LLMService(
         Settings(
             llm_provider="ollama",
-            ollama_base_url="http://localhost:11434",
+            ollama_base_url="http://127.0.0.1:11434",
             ollama_model="llama3.1",
             llm_temperature=0.15,
             llm_timeout=12.5,
@@ -59,11 +59,12 @@ def test_ollama_llm_service_posts_expected_payload(monkeypatch) -> None:
     answer = service.compose_answer("What is the remote work policy?", "Employees may work remotely two days per week.")
 
     assert answer == "Use only the provided context."
-    assert captured["url"] == "http://localhost:11434/api/chat"
+    assert captured["url"] == "http://127.0.0.1:11434/api/chat"
     payload = captured["json"]
     assert isinstance(payload, dict)
     assert payload["model"] == "llama3.1"
     assert payload["stream"] is False
+    assert payload["keep_alive"] == "1h"
     assert payload["options"] == {"temperature": 0.15}
     assert payload["messages"][0]["role"] == "system"
     assert payload["messages"][1]["role"] == "user"

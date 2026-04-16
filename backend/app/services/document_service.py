@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 import mimetypes
 from pathlib import Path
 from uuid import uuid4
@@ -112,7 +112,7 @@ class DocumentService:
             document_id=document_id,
             filename=filename,
             status="processed",
-            uploaded_at=datetime.now(UTC),
+            uploaded_at=datetime.now(timezone.utc),
             chunks_created=len(chunks),
             embedding_model=self.settings.embedding_model,
             content_type=content_type,

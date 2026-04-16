@@ -36,6 +36,7 @@ class LLMService:
         payload = {
             "model": self.settings.ollama_model,
             "stream": False,
+            "keep_alive": self.settings.ollama_keep_alive,
             "messages": [
                 {
                     "role": "system",
