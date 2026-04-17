@@ -1,3 +1,14 @@
+"""
+EN: File: tests/test_ingestion_snapshot.py
+EN: Purpose: Contains automated tests validating application behavior and edge cases.
+EN: Scope: Documents key classes, functions, and execution flow in two languages.
+EN: Notes: Keep comments concise and aligned with implementation changes.
+RU: Файл: tests/test_ingestion_snapshot.py
+RU: Назначение: Содержит автотесты, проверяющие поведение приложения и граничные случаи.
+RU: Область: Документирует ключевые классы, функции и поток выполнения на двух языках.
+RU: Примечание: Держите комментарии лаконичными и синхронизированными с кодом.
+"""
+
 from __future__ import annotations
 
 import json
@@ -13,6 +24,8 @@ from app.services.vector_store import VectorStore
 from tests.conftest import DummyUploadFile
 
 
+# EN: Function test_text_ingestion_outputs_json_snapshot executes a specific reusable operation.
+# RU: Функция test_text_ingestion_outputs_json_snapshot выполняет конкретную переиспользуемую операцию.
 @pytest.mark.smoke
 async def test_text_ingestion_outputs_json_snapshot(tmp_path) -> None:
     settings = Settings(

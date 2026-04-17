@@ -1,3 +1,14 @@
+"""
+EN: File: tests/test_ask_document_ollama_cli.py
+EN: Purpose: Contains automated tests validating application behavior and edge cases.
+EN: Scope: Documents key classes, functions, and execution flow in two languages.
+EN: Notes: Keep comments concise and aligned with implementation changes.
+RU: Файл: tests/test_ask_document_ollama_cli.py
+RU: Назначение: Содержит автотесты, проверяющие поведение приложения и граничные случаи.
+RU: Область: Документирует ключевые классы, функции и поток выполнения на двух языках.
+RU: Примечание: Держите комментарии лаконичными и синхронизированными с кодом.
+"""
+
 from __future__ import annotations
 
 import json
@@ -8,6 +19,8 @@ import sys
 from app.scripts.ask_document import build_parser
 
 
+# EN: Function test_ask_document_ollama_defaults_to_ollama executes a specific reusable operation.
+# RU: Функция test_ask_document_ollama_defaults_to_ollama выполняет конкретную переиспользуемую операцию.
 def test_ask_document_ollama_defaults_to_ollama() -> None:
     parser = build_parser(default_llm_provider="ollama")
 
@@ -16,6 +29,8 @@ def test_ask_document_ollama_defaults_to_ollama() -> None:
     assert args.llm_provider == "ollama"
 
 
+# EN: Function test_ask_document_ollama_cli_outputs_answer executes a specific reusable operation.
+# RU: Функция test_ask_document_ollama_cli_outputs_answer выполняет конкретную переиспользуемую операцию.
 def test_ask_document_ollama_cli_outputs_answer(tmp_path) -> None:
     source_file = tmp_path / "policy.txt"
     source_file.write_text(

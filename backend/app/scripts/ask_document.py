@@ -1,3 +1,14 @@
+"""
+EN: File: app/scripts/ask_document.py
+EN: Purpose: Provides command-line or helper script entry points.
+EN: Scope: Documents key classes, functions, and execution flow in two languages.
+EN: Notes: Keep comments concise and aligned with implementation changes.
+RU: Файл: app/scripts/ask_document.py
+RU: Назначение: Предоставляет CLI-точки входа и вспомогательные скрипты.
+RU: Область: Документирует ключевые классы, функции и поток выполнения на двух языках.
+RU: Примечание: Держите комментарии лаконичными и синхронизированными с кодом.
+"""
+
 from __future__ import annotations
 
 import argparse
@@ -16,6 +27,8 @@ from app.services.vector_store import VectorStore
 from app.scripts.stdio import configure_utf8_stdio
 
 
+# EN: Function build_parser executes a specific reusable operation.
+# RU: Функция build_parser выполняет конкретную переиспользуемую операцию.
 def build_parser(default_llm_provider: str | None = None) -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Ingest a local document and ask a question against it.")
     parser.add_argument("file", nargs="?", help="Path to a local TXT, MD, or PDF file")
@@ -37,6 +50,8 @@ def build_parser(default_llm_provider: str | None = None) -> argparse.ArgumentPa
     return parser
 
 
+# EN: Function build_settings executes a specific reusable operation.
+# RU: Функция build_settings выполняет конкретную переиспользуемую операцию.
 def build_settings(
     workspace_dir: Path | None,
     chunk_size: int,
@@ -74,6 +89,8 @@ def build_settings(
     return settings, workspace_dir
 
 
+# EN: Function main executes a specific reusable operation.
+# RU: Функция main выполняет конкретную переиспользуемую операцию.
 def main(default_llm_provider: str | None = None) -> int:
     configure_utf8_stdio()
     parser = build_parser(default_llm_provider=default_llm_provider)

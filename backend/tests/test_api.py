@@ -1,3 +1,16 @@
+"""
+EN: File: tests/test_api.py
+EN: Purpose: Contains automated tests validating application behavior and edge cases.
+EN: Scope: Documents key classes, functions, and execution flow in two languages.
+EN: Notes: Keep comments concise and aligned with implementation changes.
+RU: Файл: tests/test_api.py
+RU: Назначение: Содержит автотесты, проверяющие поведение приложения и граничные случаи.
+RU: Область: Документирует ключевые классы, функции и поток выполнения на двух языках.
+RU: Примечание: Держите комментарии лаконичными и синхронизированными с кодом.
+"""
+
+# EN: Function test_health_endpoint executes a specific reusable operation.
+# RU: Функция test_health_endpoint выполняет конкретную переиспользуемую операцию.
 def test_health_endpoint(client) -> None:
     response = client.get("/health")
 
@@ -5,6 +18,8 @@ def test_health_endpoint(client) -> None:
     assert response.json()["status"] == "ok"
 
 
+# EN: Function test_document_workflow_and_chat executes a specific reusable operation.
+# RU: Функция test_document_workflow_and_chat выполняет конкретную переиспользуемую операцию.
 def test_document_workflow_and_chat(client) -> None:
     upload_response = client.post(
         "/api/documents/upload",

@@ -1,3 +1,14 @@
+"""
+EN: File: app/core/config.py
+EN: Purpose: Provides core configuration and dependency wiring utilities.
+EN: Scope: Documents key classes, functions, and execution flow in two languages.
+EN: Notes: Keep comments concise and aligned with implementation changes.
+RU: Файл: app/core/config.py
+RU: Назначение: Содержит базовые настройки и привязку зависимостей.
+RU: Область: Документирует ключевые классы, функции и поток выполнения на двух языках.
+RU: Примечание: Держите комментарии лаконичными и синхронизированными с кодом.
+"""
+
 from functools import lru_cache
 from pathlib import Path
 
@@ -5,6 +16,8 @@ from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
+# EN: Class Settings groups related state and behavior.
+# RU: Класс Settings объединяет связанное состояние и поведение.
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
@@ -30,12 +43,16 @@ class Settings(BaseSettings):
     chunk_overlap: int = 200
     max_search_results: int = 5
 
+    # EN: Method ensure_directories performs a focused step of the class workflow.
+    # RU: Метод ensure_directories выполняет целевой шаг в рабочем процессе класса.
     def ensure_directories(self) -> None:
         self.upload_dir.mkdir(parents=True, exist_ok=True)
         self.index_path.mkdir(parents=True, exist_ok=True)
         self.metadata_dir.mkdir(parents=True, exist_ok=True)
 
 
+# EN: Function get_settings executes a specific reusable operation.
+# RU: Функция get_settings выполняет конкретную переиспользуемую операцию.
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:
     settings = Settings()

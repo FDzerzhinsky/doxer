@@ -1,3 +1,14 @@
+"""
+EN: File: app/services/document_service.py
+EN: Purpose: Implements business services used by API and scripts.
+EN: Scope: Documents key classes, functions, and execution flow in two languages.
+EN: Notes: Keep comments concise and aligned with implementation changes.
+RU: Файл: app/services/document_service.py
+RU: Назначение: Реализует бизнес-сервисы для API и скриптов.
+RU: Область: Документирует ключевые классы, функции и поток выполнения на двух языках.
+RU: Примечание: Держите комментарии лаконичными и синхронизированными с кодом.
+"""
+
 from __future__ import annotations
 
 from datetime import datetime, timezone
@@ -16,7 +27,11 @@ from app.utils.chunking import chunk_text
 from app.utils.file_loader import load_document_text
 
 
+# EN: Class DocumentService groups related state and behavior.
+# RU: Класс DocumentService объединяет связанное состояние и поведение.
 class DocumentService:
+    # EN: Method __init__ performs a focused step of the class workflow.
+    # RU: Метод __init__ выполняет целевой шаг в рабочем процессе класса.
     def __init__(
         self,
         settings: Settings,
@@ -32,6 +47,8 @@ class DocumentService:
         self.settings.ensure_directories()
         self._load_documents_from_store()
 
+    # EN: Method register_upload performs a focused step of the class workflow.
+    # RU: Метод register_upload выполняет целевой шаг в рабочем процессе класса.
     async def register_upload(self, file: UploadFile) -> DocumentRecord:
         content = await file.read()
         return self._register_bytes(
@@ -40,6 +57,8 @@ class DocumentService:
             content_type=file.content_type,
         )
 
+    # EN: Method register_local_file performs a focused step of the class workflow.
+    # RU: Метод register_local_file выполняет целевой шаг в рабочем процессе класса.
     def register_local_file(self, source_path: Path) -> DocumentRecord:
         if not source_path.exists():
             raise FileNotFoundError(source_path)
@@ -50,12 +69,18 @@ class DocumentService:
             content_type=mimetypes.guess_type(source_path.name)[0],
         )
 
+    # EN: Method list_documents performs a focused step of the class workflow.
+    # RU: Метод list_documents выполняет целевой шаг в рабочем процессе класса.
     def list_documents(self) -> list[DocumentRecord]:
         return list(self._documents.values())
 
+    # EN: Method get_document performs a focused step of the class workflow.
+    # RU: Метод get_document выполняет целевой шаг в рабочем процессе класса.
     def get_document(self, document_id: str) -> DocumentRecord | None:
         return self._documents.get(document_id)
 
+    # EN: Method build_document_snapshot performs a focused step of the class workflow.
+    # RU: Метод build_document_snapshot выполняет целевой шаг в рабочем процессе класса.
     def build_document_snapshot(self, document_id: str) -> dict[str, object]:
         document = self.get_document(document_id)
         if document is None:
@@ -70,10 +95,14 @@ class DocumentService:
             "vector_count": len(vector_records),
         }
 
+    # EN: Method _load_documents_from_store performs a focused step of the class workflow.
+    # RU: Метод _load_documents_from_store выполняет целевой шаг в рабочем процессе класса.
     def _load_documents_from_store(self) -> None:
         for document in self.metadata_store.list_documents():
             self._documents[document.document_id] = document
 
+    # EN: Method _register_bytes performs a focused step of the class workflow.
+    # RU: Метод _register_bytes выполняет целевой шаг в рабочем процессе класса.
     def _register_bytes(self, filename: str, content: bytes, content_type: str | None) -> DocumentRecord:
         document_id = f"doc_{uuid4().hex[:12]}"
         file_path = self.settings.upload_dir / f"{document_id}_{Path(filename).name}"

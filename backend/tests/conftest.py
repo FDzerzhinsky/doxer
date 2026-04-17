@@ -1,3 +1,14 @@
+"""
+EN: File: tests/conftest.py
+EN: Purpose: Contains automated tests validating application behavior and edge cases.
+EN: Scope: Documents key classes, functions, and execution flow in two languages.
+EN: Notes: Keep comments concise and aligned with implementation changes.
+RU: Файл: tests/conftest.py
+RU: Назначение: Содержит автотесты, проверяющие поведение приложения и граничные случаи.
+RU: Область: Документирует ключевые классы, функции и поток выполнения на двух языках.
+RU: Примечание: Держите комментарии лаконичными и синхронизированными с кодом.
+"""
+
 from __future__ import annotations
 
 from collections.abc import Iterator
@@ -17,16 +28,24 @@ from app.services.rag_service import RagService
 from app.services.vector_store import VectorStore
 
 
+# EN: Class DummyUploadFile groups related state and behavior.
+# RU: Класс DummyUploadFile объединяет связанное состояние и поведение.
 class DummyUploadFile:
+    # EN: Method __init__ performs a focused step of the class workflow.
+    # RU: Метод __init__ выполняет целевой шаг в рабочем процессе класса.
     def __init__(self, filename: str, content: bytes, content_type: str = "text/plain") -> None:
         self.filename = filename
         self.content_type = content_type
         self._content = content
 
+    # EN: Method read performs a focused step of the class workflow.
+    # RU: Метод read выполняет целевой шаг в рабочем процессе класса.
     async def read(self) -> bytes:
         return self._content
 
 
+# EN: Function test_settings executes a specific reusable operation.
+# RU: Функция test_settings выполняет конкретную переиспользуемую операцию.
 @pytest.fixture()
 def test_settings(tmp_path: Path) -> Settings:
     return Settings(
@@ -38,6 +57,8 @@ def test_settings(tmp_path: Path) -> Settings:
     )
 
 
+# EN: Function test_services executes a specific reusable operation.
+# RU: Функция test_services выполняет конкретную переиспользуемую операцию.
 @pytest.fixture()
 def test_services(test_settings: Settings) -> tuple[DocumentService, RagService]:
     embedding_service = EmbeddingService()
@@ -59,6 +80,8 @@ def test_services(test_settings: Settings) -> tuple[DocumentService, RagService]
     return document_service, rag_service
 
 
+# EN: Function client executes a specific reusable operation.
+# RU: Функция client выполняет конкретную переиспользуемую операцию.
 @pytest.fixture()
 def client(test_services: tuple[DocumentService, RagService]) -> Iterator[TestClient]:
     document_service, rag_service = test_services

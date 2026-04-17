@@ -1,9 +1,22 @@
+"""
+EN: File: tests/test_llm_service.py
+EN: Purpose: Contains automated tests validating application behavior and edge cases.
+EN: Scope: Documents key classes, functions, and execution flow in two languages.
+EN: Notes: Keep comments concise and aligned with implementation changes.
+RU: Файл: tests/test_llm_service.py
+RU: Назначение: Содержит автотесты, проверяющие поведение приложения и граничные случаи.
+RU: Область: Документирует ключевые классы, функции и поток выполнения на двух языках.
+RU: Примечание: Держите комментарии лаконичными и синхронизированными с кодом.
+"""
+
 from __future__ import annotations
 
 from app.core.config import Settings
 from app.services.llm_service import LLMService
 
 
+# EN: Function test_mock_llm_service_uses_context executes a specific reusable operation.
+# RU: Функция test_mock_llm_service_uses_context выполняет конкретную переиспользуемую операцию.
 def test_mock_llm_service_uses_context() -> None:
     service = LLMService(
         Settings(
@@ -18,27 +31,45 @@ def test_mock_llm_service_uses_context() -> None:
     assert "Employees may work remotely two days per week." in answer
 
 
+# EN: Function test_ollama_llm_service_posts_expected_payload executes a specific reusable operation.
+# RU: Функция test_ollama_llm_service_posts_expected_payload выполняет конкретную переиспользуемую операцию.
 def test_ollama_llm_service_posts_expected_payload(monkeypatch) -> None:
     captured: dict[str, object] = {}
 
+    # EN: Class FakeResponse groups related state and behavior.
+    # RU: Класс FakeResponse объединяет связанное состояние и поведение.
     class FakeResponse:
+        # EN: Method raise_for_status performs a focused step of the class workflow.
+        # RU: Метод raise_for_status выполняет целевой шаг в рабочем процессе класса.
         def raise_for_status(self) -> None:
             return None
 
+        # EN: Method json performs a focused step of the class workflow.
+        # RU: Метод json выполняет целевой шаг в рабочем процессе класса.
         def json(self) -> dict[str, object]:
             return {"message": {"content": "Use only the provided context."}}
 
+    # EN: Class FakeClient groups related state and behavior.
+    # RU: Класс FakeClient объединяет связанное состояние и поведение.
     class FakeClient:
+        # EN: Method __init__ performs a focused step of the class workflow.
+        # RU: Метод __init__ выполняет целевой шаг в рабочем процессе класса.
         def __init__(self, *, trust_env: bool, timeout: float) -> None:
             captured["trust_env"] = trust_env
             captured["timeout"] = timeout
 
+        # EN: Method __enter__ performs a focused step of the class workflow.
+        # RU: Метод __enter__ выполняет целевой шаг в рабочем процессе класса.
         def __enter__(self) -> "FakeClient":
             return self
 
+        # EN: Method __exit__ performs a focused step of the class workflow.
+        # RU: Метод __exit__ выполняет целевой шаг в рабочем процессе класса.
         def __exit__(self, exc_type, exc_value, traceback) -> None:
             return None
 
+        # EN: Method post performs a focused step of the class workflow.
+        # RU: Метод post выполняет целевой шаг в рабочем процессе класса.
         def post(self, url: str, *, json: dict[str, object]) -> FakeResponse:
             captured["url"] = url
             captured["json"] = json

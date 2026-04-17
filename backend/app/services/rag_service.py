@@ -1,3 +1,14 @@
+"""
+EN: File: app/services/rag_service.py
+EN: Purpose: Implements business services used by API and scripts.
+EN: Scope: Documents key classes, functions, and execution flow in two languages.
+EN: Notes: Keep comments concise and aligned with implementation changes.
+RU: Файл: app/services/rag_service.py
+RU: Назначение: Реализует бизнес-сервисы для API и скриптов.
+RU: Область: Документирует ключевые классы, функции и поток выполнения на двух языках.
+RU: Примечание: Держите комментарии лаконичными и синхронизированными с кодом.
+"""
+
 from __future__ import annotations
 
 from app.core.config import Settings
@@ -8,7 +19,11 @@ from app.services.llm_service import LLMService
 from app.services.vector_store import VectorStore
 
 
+# EN: Class RagService groups related state and behavior.
+# RU: Класс RagService объединяет связанное состояние и поведение.
 class RagService:
+    # EN: Method __init__ performs a focused step of the class workflow.
+    # RU: Метод __init__ выполняет целевой шаг в рабочем процессе класса.
     def __init__(
         self,
         settings: Settings,
@@ -23,6 +38,8 @@ class RagService:
         self.vector_store = vector_store
         self.llm_service = llm_service
 
+    # EN: Method answer_question performs a focused step of the class workflow.
+    # RU: Метод answer_question выполняет целевой шаг в рабочем процессе класса.
     def answer_question(self, payload: AskRequest) -> ChatResponse:
         document = self.document_service.get_document(payload.document_id)
         if document is None:

@@ -1,3 +1,14 @@
+"""
+EN: File: app/core/dependencies.py
+EN: Purpose: Provides core configuration and dependency wiring utilities.
+EN: Scope: Documents key classes, functions, and execution flow in two languages.
+EN: Notes: Keep comments concise and aligned with implementation changes.
+RU: Файл: app/core/dependencies.py
+RU: Назначение: Содержит базовые настройки и привязку зависимостей.
+RU: Область: Документирует ключевые классы, функции и поток выполнения на двух языках.
+RU: Примечание: Держите комментарии лаконичными и синхронизированными с кодом.
+"""
+
 from functools import lru_cache
 
 from app.core.config import Settings, get_settings
@@ -9,6 +20,8 @@ from app.repositories.metadata_store import JsonMetadataStore
 from app.services.vector_store import VectorStore
 
 
+# EN: Function get_vector_store executes a specific reusable operation.
+# RU: Функция get_vector_store выполняет конкретную переиспользуемую операцию.
 @lru_cache(maxsize=1)
 def get_vector_store() -> VectorStore:
     settings = get_settings()
@@ -16,22 +29,30 @@ def get_vector_store() -> VectorStore:
     return VectorStore(index_dir=settings.index_path, dimension=embedding_service.dimension)
 
 
+# EN: Function get_embedding_service executes a specific reusable operation.
+# RU: Функция get_embedding_service выполняет конкретную переиспользуемую операцию.
 @lru_cache(maxsize=1)
 def get_embedding_service() -> EmbeddingService:
     return EmbeddingService()
 
 
+# EN: Function get_llm_service executes a specific reusable operation.
+# RU: Функция get_llm_service выполняет конкретную переиспользуемую операцию.
 @lru_cache(maxsize=1)
 def get_llm_service() -> LLMService:
     return LLMService()
 
 
+# EN: Function get_metadata_store executes a specific reusable operation.
+# RU: Функция get_metadata_store выполняет конкретную переиспользуемую операцию.
 @lru_cache(maxsize=1)
 def get_metadata_store() -> JsonMetadataStore:
     settings = get_settings()
     return JsonMetadataStore(settings.metadata_dir)
 
 
+# EN: Function get_document_service executes a specific reusable operation.
+# RU: Функция get_document_service выполняет конкретную переиспользуемую операцию.
 @lru_cache(maxsize=1)
 def get_document_service() -> DocumentService:
     settings = get_settings()
@@ -43,6 +64,8 @@ def get_document_service() -> DocumentService:
     )
 
 
+# EN: Function get_rag_service executes a specific reusable operation.
+# RU: Функция get_rag_service выполняет конкретную переиспользуемую операцию.
 @lru_cache(maxsize=1)
 def get_rag_service() -> RagService:
     settings = get_settings()

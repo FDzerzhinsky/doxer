@@ -1,3 +1,14 @@
+"""
+EN: File: tests/test_document_service.py
+EN: Purpose: Contains automated tests validating application behavior and edge cases.
+EN: Scope: Documents key classes, functions, and execution flow in two languages.
+EN: Notes: Keep comments concise and aligned with implementation changes.
+RU: Файл: tests/test_document_service.py
+RU: Назначение: Содержит автотесты, проверяющие поведение приложения и граничные случаи.
+RU: Область: Документирует ключевые классы, функции и поток выполнения на двух языках.
+RU: Примечание: Держите комментарии лаконичными и синхронизированными с кодом.
+"""
+
 from app.services.document_service import DocumentService
 from app.services.embedding_service import EmbeddingService
 from app.repositories.metadata_store import JsonMetadataStore
@@ -6,6 +17,8 @@ from app.services.vector_store import VectorStore
 from tests.conftest import DummyUploadFile
 
 
+# EN: Function test_register_upload_processes_file_and_chunks executes a specific reusable operation.
+# RU: Функция test_register_upload_processes_file_and_chunks выполняет конкретную переиспользуемую операцию.
 async def test_register_upload_processes_file_and_chunks(test_settings) -> None:
     embedding_service = EmbeddingService()
     vector_store = VectorStore(index_dir=test_settings.index_path, dimension=embedding_service.dimension)
@@ -32,6 +45,8 @@ async def test_register_upload_processes_file_and_chunks(test_settings) -> None:
     assert service.get_document(record.document_id) == record
 
 
+# EN: Function test_metadata_persists_between_service_instances executes a specific reusable operation.
+# RU: Функция test_metadata_persists_between_service_instances выполняет конкретную переиспользуемую операцию.
 async def test_metadata_persists_between_service_instances(test_settings) -> None:
     embedding_service = EmbeddingService()
     vector_store = VectorStore(index_dir=test_settings.index_path, dimension=embedding_service.dimension)
@@ -65,6 +80,8 @@ async def test_metadata_persists_between_service_instances(test_settings) -> Non
     assert second_service.list_documents()
 
 
+# EN: Function test_register_local_file_builds_snapshot executes a specific reusable operation.
+# RU: Функция test_register_local_file_builds_snapshot выполняет конкретную переиспользуемую операцию.
 def test_register_local_file_builds_snapshot(test_settings, tmp_path) -> None:
     embedding_service = EmbeddingService()
     vector_store = VectorStore(index_dir=test_settings.index_path, dimension=embedding_service.dimension)

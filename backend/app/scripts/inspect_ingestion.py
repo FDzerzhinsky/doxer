@@ -1,3 +1,14 @@
+"""
+EN: File: app/scripts/inspect_ingestion.py
+EN: Purpose: Provides command-line or helper script entry points.
+EN: Scope: Documents key classes, functions, and execution flow in two languages.
+EN: Notes: Keep comments concise and aligned with implementation changes.
+RU: Файл: app/scripts/inspect_ingestion.py
+RU: Назначение: Предоставляет CLI-точки входа и вспомогательные скрипты.
+RU: Область: Документирует ключевые классы, функции и поток выполнения на двух языках.
+RU: Примечание: Держите комментарии лаконичными и синхронизированными с кодом.
+"""
+
 from __future__ import annotations
 
 import argparse
@@ -13,6 +24,8 @@ from app.services.vector_store import VectorStore
 from app.scripts.stdio import configure_utf8_stdio
 
 
+# EN: Function build_parser executes a specific reusable operation.
+# RU: Функция build_parser выполняет конкретную переиспользуемую операцию.
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Inspect document ingestion and print chunks plus metadata as JSON.")
     parser.add_argument("file", nargs="?", help="Path to a local TXT, MD, or PDF file")
@@ -23,6 +36,8 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+# EN: Function build_settings executes a specific reusable operation.
+# RU: Функция build_settings выполняет конкретную переиспользуемую операцию.
 def build_settings(workspace_dir: Path | None, chunk_size: int, chunk_overlap: int) -> tuple[Settings, Path]:
     if workspace_dir is None:
         workspace_dir = Path(tempfile.mkdtemp(prefix="doxer-ingestion-"))
@@ -39,6 +54,8 @@ def build_settings(workspace_dir: Path | None, chunk_size: int, chunk_overlap: i
     return settings, workspace_dir
 
 
+# EN: Function main executes a specific reusable operation.
+# RU: Функция main выполняет конкретную переиспользуемую операцию.
 def main() -> int:
     configure_utf8_stdio()
     parser = build_parser()

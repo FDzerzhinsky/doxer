@@ -1,6 +1,19 @@
+"""
+EN: File: tests/test_vector_store_faiss.py
+EN: Purpose: Contains automated tests validating application behavior and edge cases.
+EN: Scope: Documents key classes, functions, and execution flow in two languages.
+EN: Notes: Keep comments concise and aligned with implementation changes.
+RU: Файл: tests/test_vector_store_faiss.py
+RU: Назначение: Содержит автотесты, проверяющие поведение приложения и граничные случаи.
+RU: Область: Документирует ключевые классы, функции и поток выполнения на двух языках.
+RU: Примечание: Держите комментарии лаконичными и синхронизированными с кодом.
+"""
+
 from app.services.vector_store import VectorRecord, VectorStore
 
 
+# EN: Function test_vector_store_search_orders_by_similarity executes a specific reusable operation.
+# RU: Функция test_vector_store_search_orders_by_similarity выполняет конкретную переиспользуемую операцию.
 def test_vector_store_search_orders_by_similarity(tmp_path) -> None:
     store = VectorStore(index_dir=tmp_path / "index", dimension=3)
 
@@ -35,6 +48,8 @@ def test_vector_store_search_orders_by_similarity(tmp_path) -> None:
     assert results[0][1] >= results[1][1]
 
 
+# EN: Function test_vector_store_reloads_from_disk executes a specific reusable operation.
+# RU: Функция test_vector_store_reloads_from_disk выполняет конкретную переиспользуемую операцию.
 def test_vector_store_reloads_from_disk(tmp_path) -> None:
     index_dir = tmp_path / "index"
     first_store = VectorStore(index_dir=index_dir, dimension=3)

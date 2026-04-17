@@ -1,3 +1,14 @@
+"""
+EN: File: app/main.py
+EN: Purpose: Creates and configures the FastAPI application entry point.
+EN: Scope: Documents key classes, functions, and execution flow in two languages.
+EN: Notes: Keep comments concise and aligned with implementation changes.
+RU: Файл: app/main.py
+RU: Назначение: Создает и настраивает точку входа FastAPI-приложения.
+RU: Область: Документирует ключевые классы, функции и поток выполнения на двух языках.
+RU: Примечание: Держите комментарии лаконичными и синхронизированными с кодом.
+"""
+
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -11,6 +22,8 @@ from app.core.config import get_settings
 settings = get_settings()
 
 
+# EN: Function lifespan executes a specific reusable operation.
+# RU: Функция lifespan выполняет конкретную переиспользуемую операцию.
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     settings.ensure_directories()
@@ -35,6 +48,8 @@ app.include_router(health_router)
 app.include_router(api_router, prefix="/api")
 
 
+# EN: Function root executes a specific reusable operation.
+# RU: Функция root выполняет конкретную переиспользуемую операцию.
 @app.get("/")
 def root() -> dict[str, str]:
     return {
