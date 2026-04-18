@@ -26,14 +26,26 @@ from app.services.vector_store import VectorStore
 def get_vector_store() -> VectorStore:
     settings = get_settings()
     embedding_service = get_embedding_service()
-    return VectorStore(index_dir=settings.index_path, dimension=embedding_service.dimension)
+    return VectorStore(
+        index_dir=settings.index_path,
+        dimension=embedding_service.dimension,
+        embedding_signature=embedding_service.signature,
+        reembed_texts=embedding_service.embed_passages,
+    )
 
 
 # EN: Function get_embedding_service executes a specific reusable operation.
 # RU: Функция get_embedding_service выполняет конкретную переиспользуемую операцию.
 @lru_cache(maxsize=1)
 def get_embedding_service() -> EmbeddingService:
-    return EmbeddingService()
+    settings = get_settings()
+    return EmbeddingService(
+        provider=settings.embedding_provider,
+        model_name=settings.embedding_model,
+        query_prefix=settings.embedding_query_prefix,
+        passage_prefix=settings.embedding_passage_prefix,
+        batch_size=settings.embedding_batch_size,
+    )
 
 
 # EN: Function get_llm_service executes a specific reusable operation.

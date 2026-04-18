@@ -7,7 +7,7 @@ It allows uploading PDFs or text files and asking questions about their content,
 ## Current Implementation Status
 
 - Backend pipeline is implemented and tested.
-- Embeddings are working, but they are currently deterministic hash-based vectors rather than a semantic model.
+- Embeddings are semantic and multilingual via `sentence-transformers` (`intfloat/multilingual-e5-base` by default).
 - Vector storage is working and backed by FAISS with disk persistence.
 - LLM answering is wired through Ollama with a mock fallback.
 - Frontend is planned, but it is not yet checked into this repository.
@@ -101,7 +101,7 @@ flowchart LR
 
 ### AI and Search
 - Ollama or hosted LLM API for answer generation
-- Deterministic embedding service today, easy to swap for sentence-transformers or OpenAI later
+- `sentence-transformers` embedding service with query/passage formatting (E5-style)
 - FAISS for vector similarity search
 
 ### Document Processing
@@ -186,12 +186,16 @@ API_HOST=0.0.0.0
 API_PORT=8000
 
 # Embeddings
-EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+EMBEDDING_PROVIDER=sentence-transformers
+EMBEDDING_MODEL=intfloat/multilingual-e5-base
+EMBEDDING_QUERY_PREFIX="query: "
+EMBEDDING_PASSAGE_PREFIX="passage: "
+EMBEDDING_BATCH_SIZE=32
 
 # LLM
 LLM_PROVIDER=ollama
 OLLAMA_BASE_URL=http://127.0.0.1:11434
-OLLAMA_MODEL=qwen2.5:1.5b
+OLLAMA_MODEL=qwen2.5:7b
 OLLAMA_KEEP_ALIVE=1h
 LLM_TEMPERATURE=0.2
 LLM_TIMEOUT=60
@@ -273,7 +277,7 @@ POST /api/documents/upload
   "status": "processed",
   "uploaded_at": "2026-04-06T10:15:00Z",
   "chunks_created": 24,
-  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2"
+  "embedding_model": "intfloat/multilingual-e5-base"
 }
 ```
 
@@ -294,7 +298,7 @@ GET /api/documents
       "status": "processed",
       "uploaded_at": "2026-04-06T10:15:00Z",
       "chunks_created": 24,
-      "embedding_model": "sentence-transformers/all-MiniLM-L6-v2"
+      "embedding_model": "intfloat/multilingual-e5-base"
     }
   ]
 }
@@ -346,7 +350,7 @@ GET /api/documents/{document_id}
   "status": "processed",
   "uploaded_at": "2026-04-06T10:15:00Z",
   "chunks_created": 24,
-  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "embedding_model": "intfloat/multilingual-e5-base",
   "content_type": "application/pdf"
 }
 ```

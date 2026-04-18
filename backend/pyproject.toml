@@ -17,6 +17,7 @@ dependencies = [
   "pypdf>=4.2",
   "numpy>=1.26",
   "faiss-cpu>=1.10.0",
+  "sentence-transformers>=3.0",
 ]
 
 [project.scripts]

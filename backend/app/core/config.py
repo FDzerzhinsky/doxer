@@ -26,10 +26,14 @@ class Settings(BaseSettings):
     api_host: str = "0.0.0.0"
     api_port: int = 8000
 
-    embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
+    embedding_provider: str = "sentence-transformers"
+    embedding_model: str = "intfloat/multilingual-e5-base"
+    embedding_query_prefix: str = "query: "
+    embedding_passage_prefix: str = "passage: "
+    embedding_batch_size: int = 32
     llm_provider: str = "mock"
     ollama_base_url: str = "http://127.0.0.1:11434"
-    ollama_model: str = "qwen2.5:1.5b"
+    ollama_model: str = "qwen2.5:7b"
     ollama_keep_alive: str = "1h"
     llm_temperature: float = 0.2
     llm_timeout: float = 60.0

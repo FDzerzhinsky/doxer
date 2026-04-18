@@ -71,12 +71,23 @@ def main() -> int:
 
     workspace_dir_arg = Path(args.workspace_dir).expanduser().resolve() if args.workspace_dir else None
     settings, workspace_dir = build_settings(workspace_dir_arg, args.chunk_size, args.chunk_overlap)
-    embedding_service = EmbeddingService()
+    embedding_service = EmbeddingService(
+        provider=settings.embedding_provider,
+        model_name=settings.embedding_model,
+        query_prefix=settings.embedding_query_prefix,
+        passage_prefix=settings.embedding_passage_prefix,
+        batch_size=settings.embedding_batch_size,
+    )
 
     document_service = DocumentService(
         settings=settings,
         embedding_service=embedding_service,
-        vector_store=VectorStore(index_dir=settings.index_path, dimension=embedding_service.dimension),
+        vector_store=VectorStore(
+            index_dir=settings.index_path,
+            dimension=embedding_service.dimension,
+            embedding_signature=embedding_service.signature,
+            reembed_texts=embedding_service.embed_passages,
+        ),
         metadata_store=JsonMetadataStore(settings.metadata_dir),
     )
 

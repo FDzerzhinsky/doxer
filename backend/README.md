@@ -15,20 +15,20 @@ FastAPI backend for the AI Document Assistant RAG pipeline.
 - Uploads are persisted to `data/uploads`
 - Metadata is persisted to `data/metadata`
 - Vector search is backed by FAISS and persisted to `data/index`
-- The embedding layer works today, but it uses deterministic hash vectors rather than a semantic model
+- Embeddings use `sentence-transformers` with multilingual E5 defaults (`intfloat/multilingual-e5-base`)
 - The LLM layer can call a local Ollama server; mock mode remains available for offline development
 - PDF support depends on `pypdf`
 
 ## What works now
 
 - File upload, chunking, and metadata persistence
-- Deterministic embeddings for each chunk and query
+- Semantic passage/query embeddings with E5-compatible prefixes
 - FAISS-backed similarity search with on-disk persistence
+- Vector index metadata tracks embedding signature and re-embeds existing vectors when the signature changes
 - Ollama or mock answer generation, depending on environment config
 
 ## What is still provisional
 
-- The embedding service is a placeholder and should be swapped for a real model when needed
 - The LLM flow currently returns a single non-streaming answer
 - Document metadata still uses JSON files, not a database
 
@@ -118,7 +118,7 @@ Then, in a second terminal, use the dedicated wrapper command:
 uv run --project backend ask-document-ollama --file path/to/your-file.txt --question "Каким шрифтом следует оформлять название статьи?"
 ```
 
-This stays short because the CLI uses the project defaults for the local Ollama endpoint. For CPU-only machines, `qwen2.5:1.5b` is the default fit; it is much lighter than `qwen2.5:7b` and is a better fit when there is no discrete GPU.
+This stays short because the CLI uses the project defaults for the local Ollama endpoint. The recommended model for this workspace is `qwen2.5:7b`; if you need a lighter CPU-only fallback, override `--ollama-model` for that run.
 
 If you are already inside `backend/`, you can omit `--project backend` and use `uv run ask-document-ollama ...` instead.
 

@@ -49,7 +49,7 @@ class RagService:
                 sources=[],
             )
 
-        query_embedding = self.embedding_service.embed_text(payload.question)
+        query_embedding = self.embedding_service.embed_query(payload.question)
         matches = self.vector_store.search(query_embedding, document_id=payload.document_id, limit=self.settings.max_search_results)
 
         sources = [

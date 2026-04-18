@@ -34,10 +34,24 @@ async def test_text_ingestion_outputs_json_snapshot(tmp_path) -> None:
         metadata_dir=tmp_path / "metadata",
         chunk_size=90,
         chunk_overlap=20,
+        embedding_provider="hash",
+        embedding_model="hash-test-model",
+        embedding_query_prefix="",
+        embedding_passage_prefix="",
     )
 
-    embedding_service = EmbeddingService()
-    vector_store = VectorStore(index_dir=settings.index_path, dimension=embedding_service.dimension)
+    embedding_service = EmbeddingService(
+        provider=settings.embedding_provider,
+        model_name=settings.embedding_model,
+        query_prefix=settings.embedding_query_prefix,
+        passage_prefix=settings.embedding_passage_prefix,
+    )
+    vector_store = VectorStore(
+        index_dir=settings.index_path,
+        dimension=embedding_service.dimension,
+        embedding_signature=embedding_service.signature,
+        reembed_texts=embedding_service.embed_passages,
+    )
     metadata_store = JsonMetadataStore(settings.metadata_dir)
     document_service = DocumentService(
         settings=settings,

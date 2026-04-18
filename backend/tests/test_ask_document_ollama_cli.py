@@ -59,7 +59,13 @@ def test_ask_document_ollama_cli_outputs_answer(tmp_path) -> None:
         capture_output=True,
         text=True,
         check=True,
-        env={**os.environ},
+        env={
+            **os.environ,
+            "EMBEDDING_PROVIDER": "hash",
+            "EMBEDDING_MODEL": "hash-test-model",
+            "EMBEDDING_QUERY_PREFIX": "",
+            "EMBEDDING_PASSAGE_PREFIX": "",
+        },
     )
 
     payload = json.loads(completed.stdout)

@@ -32,7 +32,7 @@ Response:
   "status": "processed",
   "uploaded_at": "2026-04-08T10:15:00Z",
   "chunks_created": 24,
-  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2"
+  "embedding_model": "intfloat/multilingual-e5-base"
 }
 ```
 
@@ -49,7 +49,7 @@ Response:
       "status": "processed",
       "uploaded_at": "2026-04-08T10:15:00Z",
       "chunks_created": 24,
-      "embedding_model": "sentence-transformers/all-MiniLM-L6-v2"
+      "embedding_model": "intfloat/multilingual-e5-base"
     }
   ]
 }
@@ -66,7 +66,7 @@ Response:
   "status": "processed",
   "uploaded_at": "2026-04-08T10:15:00Z",
   "chunks_created": 24,
-  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "embedding_model": "intfloat/multilingual-e5-base",
   "content_type": "application/pdf"
 }
 ```

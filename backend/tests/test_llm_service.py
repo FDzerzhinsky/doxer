@@ -15,6 +15,12 @@ from app.core.config import Settings
 from app.services.llm_service import LLMService
 
 
+# EN: Function test_settings_defaults_to_gpu_model executes a specific reusable operation.
+# RU: Функция test_settings_defaults_to_gpu_model выполняет конкретную переиспользуемую операцию.
+def test_settings_defaults_to_gpu_model() -> None:
+    assert Settings().ollama_model == "qwen2.5:7b"
+
+
 # EN: Function test_mock_llm_service_uses_context executes a specific reusable operation.
 # RU: Функция test_mock_llm_service_uses_context выполняет конкретную переиспользуемую операцию.
 def test_mock_llm_service_uses_context() -> None:
@@ -81,7 +87,7 @@ def test_ollama_llm_service_posts_expected_payload(monkeypatch) -> None:
         Settings(
             llm_provider="ollama",
             ollama_base_url="http://127.0.0.1:11434",
-            ollama_model="llama3.1",
+            ollama_model="qwen2.5:7b",
             llm_temperature=0.15,
             llm_timeout=12.5,
         )
@@ -93,7 +99,7 @@ def test_ollama_llm_service_posts_expected_payload(monkeypatch) -> None:
     assert captured["url"] == "http://127.0.0.1:11434/api/chat"
     payload = captured["json"]
     assert isinstance(payload, dict)
-    assert payload["model"] == "llama3.1"
+    assert payload["model"] == "qwen2.5:7b"
     assert payload["stream"] is False
     assert payload["keep_alive"] == "1h"
     assert payload["options"] == {"temperature": 0.15}

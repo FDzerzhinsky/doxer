@@ -54,6 +54,10 @@ def test_settings(tmp_path: Path) -> Settings:
         metadata_dir=tmp_path / "metadata",
         chunk_size=20,
         chunk_overlap=5,
+        embedding_provider="hash",
+        embedding_model="hash-test-model",
+        embedding_query_prefix="",
+        embedding_passage_prefix="",
     )
 
 
@@ -61,8 +65,18 @@ def test_settings(tmp_path: Path) -> Settings:
 # RU: Функция test_services выполняет конкретную переиспользуемую операцию.
 @pytest.fixture()
 def test_services(test_settings: Settings) -> tuple[DocumentService, RagService]:
-    embedding_service = EmbeddingService()
-    vector_store = VectorStore(index_dir=test_settings.index_path, dimension=embedding_service.dimension)
+    embedding_service = EmbeddingService(
+        provider=test_settings.embedding_provider,
+        model_name=test_settings.embedding_model,
+        query_prefix=test_settings.embedding_query_prefix,
+        passage_prefix=test_settings.embedding_passage_prefix,
+    )
+    vector_store = VectorStore(
+        index_dir=test_settings.index_path,
+        dimension=embedding_service.dimension,
+        embedding_signature=embedding_service.signature,
+        reembed_texts=embedding_service.embed_passages,
+    )
     metadata_store = JsonMetadataStore(test_settings.metadata_dir)
     document_service = DocumentService(
         settings=test_settings,

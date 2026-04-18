@@ -20,8 +20,18 @@ from tests.conftest import DummyUploadFile
 # EN: Function test_register_upload_processes_file_and_chunks executes a specific reusable operation.
 # RU: Функция test_register_upload_processes_file_and_chunks выполняет конкретную переиспользуемую операцию.
 async def test_register_upload_processes_file_and_chunks(test_settings) -> None:
-    embedding_service = EmbeddingService()
-    vector_store = VectorStore(index_dir=test_settings.index_path, dimension=embedding_service.dimension)
+    embedding_service = EmbeddingService(
+        provider=test_settings.embedding_provider,
+        model_name=test_settings.embedding_model,
+        query_prefix=test_settings.embedding_query_prefix,
+        passage_prefix=test_settings.embedding_passage_prefix,
+    )
+    vector_store = VectorStore(
+        index_dir=test_settings.index_path,
+        dimension=embedding_service.dimension,
+        embedding_signature=embedding_service.signature,
+        reembed_texts=embedding_service.embed_passages,
+    )
     metadata_store = JsonMetadataStore(test_settings.metadata_dir)
     service = DocumentService(
         settings=test_settings,
@@ -48,8 +58,18 @@ async def test_register_upload_processes_file_and_chunks(test_settings) -> None:
 # EN: Function test_metadata_persists_between_service_instances executes a specific reusable operation.
 # RU: Функция test_metadata_persists_between_service_instances выполняет конкретную переиспользуемую операцию.
 async def test_metadata_persists_between_service_instances(test_settings) -> None:
-    embedding_service = EmbeddingService()
-    vector_store = VectorStore(index_dir=test_settings.index_path, dimension=embedding_service.dimension)
+    embedding_service = EmbeddingService(
+        provider=test_settings.embedding_provider,
+        model_name=test_settings.embedding_model,
+        query_prefix=test_settings.embedding_query_prefix,
+        passage_prefix=test_settings.embedding_passage_prefix,
+    )
+    vector_store = VectorStore(
+        index_dir=test_settings.index_path,
+        dimension=embedding_service.dimension,
+        embedding_signature=embedding_service.signature,
+        reembed_texts=embedding_service.embed_passages,
+    )
     metadata_store = JsonMetadataStore(test_settings.metadata_dir)
 
     first_service = DocumentService(
@@ -83,8 +103,18 @@ async def test_metadata_persists_between_service_instances(test_settings) -> Non
 # EN: Function test_register_local_file_builds_snapshot executes a specific reusable operation.
 # RU: Функция test_register_local_file_builds_snapshot выполняет конкретную переиспользуемую операцию.
 def test_register_local_file_builds_snapshot(test_settings, tmp_path) -> None:
-    embedding_service = EmbeddingService()
-    vector_store = VectorStore(index_dir=test_settings.index_path, dimension=embedding_service.dimension)
+    embedding_service = EmbeddingService(
+        provider=test_settings.embedding_provider,
+        model_name=test_settings.embedding_model,
+        query_prefix=test_settings.embedding_query_prefix,
+        passage_prefix=test_settings.embedding_passage_prefix,
+    )
+    vector_store = VectorStore(
+        index_dir=test_settings.index_path,
+        dimension=embedding_service.dimension,
+        embedding_signature=embedding_service.signature,
+        reembed_texts=embedding_service.embed_passages,
+    )
     metadata_store = JsonMetadataStore(test_settings.metadata_dir)
     service = DocumentService(
         settings=test_settings,

@@ -117,7 +117,7 @@ class DocumentService:
             overlap=self.settings.chunk_overlap,
         )
 
-        embeddings = self.embedding_service.embed_texts(chunks)
+        embeddings = self.embedding_service.embed_passages(chunks)
         chunk_records: list[DocumentChunkRecord] = []
         for index, (chunk_text_value, embedding) in enumerate(zip(chunks, embeddings, strict=False), start=1):
             chunk_record = DocumentChunkRecord(

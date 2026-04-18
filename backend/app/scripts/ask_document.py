@@ -115,8 +115,19 @@ def main(default_llm_provider: str | None = None) -> int:
         llm_temperature=args.llm_temperature,
         llm_timeout=args.llm_timeout,
     )
-    embedding_service = EmbeddingService()
-    vector_store = VectorStore(index_dir=settings.index_path, dimension=embedding_service.dimension)
+    embedding_service = EmbeddingService(
+        provider=settings.embedding_provider,
+        model_name=settings.embedding_model,
+        query_prefix=settings.embedding_query_prefix,
+        passage_prefix=settings.embedding_passage_prefix,
+        batch_size=settings.embedding_batch_size,
+    )
+    vector_store = VectorStore(
+        index_dir=settings.index_path,
+        dimension=embedding_service.dimension,
+        embedding_signature=embedding_service.signature,
+        reembed_texts=embedding_service.embed_passages,
+    )
     metadata_store = JsonMetadataStore(settings.metadata_dir)
     document_service = DocumentService(
         settings=settings,
